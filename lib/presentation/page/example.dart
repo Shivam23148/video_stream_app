@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:ntavideofeedapp/Utils/language_enum.dart';
-import 'package:ntavideofeedapp/controller/language_change_controller.dart';
-import 'package:ntavideofeedapp/dio_client/dio_client.dart';
+import 'package:ntavideofeedapp/core/Utils/language_enum.dart';
+import 'package:ntavideofeedapp/core/controller/language_change_controller.dart';
+import 'package:ntavideofeedapp/core/dio_client/dio_client.dart';
 import 'package:ntavideofeedapp/presentation/page/login_screen.dart';
 import 'package:ntavideofeedapp/service/auth_example.dart';
 import 'package:ntavideofeedapp/service/auth_service.dart';

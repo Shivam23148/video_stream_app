@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:ntavideofeedapp/ServiceLocator/service_locator.dart';
-import 'package:ntavideofeedapp/dio_client/dio_client.dart';
-import 'package:ntavideofeedapp/routes/route_names.dart';
+import 'package:ntavideofeedapp/core/ServiceLocator/service_locator.dart';
+import 'package:ntavideofeedapp/core/dio_client/dio_client.dart';
+import 'package:ntavideofeedapp/core/routes/route_names.dart';
 import 'package:ntavideofeedapp/service/auth_service.dart';
 
 class SplashScreen extends StatefulWidget {

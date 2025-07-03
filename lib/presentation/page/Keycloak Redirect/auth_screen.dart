@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ntavideofeedapp/ServiceLocator/service_locator.dart';
+import 'package:ntavideofeedapp/core/ServiceLocator/service_locator.dart';
 import 'package:ntavideofeedapp/service/auth_service.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 

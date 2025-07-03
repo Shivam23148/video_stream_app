@@ -8,7 +8,7 @@ import 'package:ntavideofeedapp/presentation/page/Main/main_screen.dart';
 import 'package:ntavideofeedapp/presentation/page/Profile/OptionScreens/language_selection_screen.dart';
 import 'package:ntavideofeedapp/presentation/page/Splash/splash_screen.dart';
 import 'package:ntavideofeedapp/presentation/page/VideoPlayer/test_screen.dart';
-import 'package:ntavideofeedapp/routes/route_names.dart';
+import 'package:ntavideofeedapp/core/routes/route_names.dart';
 
 class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings settings) {

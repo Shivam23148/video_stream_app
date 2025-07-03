@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ntavideofeedapp/routes/route_names.dart';
+import 'package:ntavideofeedapp/core/routes/route_names.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});

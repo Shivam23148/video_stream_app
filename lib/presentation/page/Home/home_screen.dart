@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:ntavideofeedapp/ServiceLocator/service_locator.dart';
-import 'package:ntavideofeedapp/Utils/language_enum.dart';
-import 'package:ntavideofeedapp/controller/language_change_controller.dart';
+import 'package:ntavideofeedapp/core/ServiceLocator/service_locator.dart';
+import 'package:ntavideofeedapp/core/Utils/language_enum.dart';
+import 'package:ntavideofeedapp/core/controller/language_change_controller.dart';
 import 'package:ntavideofeedapp/presentation/page/example.dart';
-import 'package:ntavideofeedapp/routes/route_names.dart';
+import 'package:ntavideofeedapp/core/routes/route_names.dart';
 import 'package:ntavideofeedapp/service/auth_service.dart';
 import 'package:provider/provider.dart';
 

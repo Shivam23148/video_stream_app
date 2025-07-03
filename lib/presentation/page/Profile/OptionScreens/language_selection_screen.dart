@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:ntavideofeedapp/Utils/language_enum.dart';
-import 'package:ntavideofeedapp/controller/language_change_controller.dart';
+import 'package:ntavideofeedapp/core/Utils/language_enum.dart';
+import 'package:ntavideofeedapp/core/controller/language_change_controller.dart';
 import 'package:provider/provider.dart';
 
 class LanguageSelectionScreen extends StatefulWidget {

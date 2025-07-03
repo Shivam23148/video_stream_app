@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:ntavideofeedapp/ServiceLocator/service_locator.dart';
-import 'package:ntavideofeedapp/l10n/app_localizations.dart';
-import 'package:ntavideofeedapp/routes/route_names.dart';
+import 'package:ntavideofeedapp/core/ServiceLocator/service_locator.dart';
+import 'package:ntavideofeedapp/core/l10n/app_localizations.dart';
+import 'package:ntavideofeedapp/core/routes/route_names.dart';
 import 'package:ntavideofeedapp/service/auth_service.dart';
 
 class KeycloakAuthenticationRedirectScreen extends StatefulWidget {
