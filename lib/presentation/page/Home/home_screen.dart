@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ntavideofeedapp/ServiceLocator/service_locator.dart';
+import 'package:ntavideofeedapp/Utils/language_enum.dart';
 import 'package:ntavideofeedapp/controller/language_change_controller.dart';
 import 'package:ntavideofeedapp/presentation/page/example.dart';
 import 'package:ntavideofeedapp/routes/route_names.dart';
@@ -17,7 +18,11 @@ class _HomeScreenState extends State<HomeScreen> {
   final AuthService authService = serviceLocator<AuthService>();
   void _handleLogout(BuildContext context) async {
     await authService.logout();
-    Navigator.pushReplacementNamed(context, Routes.login);
+    Navigator.pushNamedAndRemoveUntil(
+      context,
+      Routes.loginRoute,
+      (Route<dynamic> route) => false,
+    );
   }
 
   @override

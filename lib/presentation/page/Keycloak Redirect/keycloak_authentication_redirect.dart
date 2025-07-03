@@ -21,7 +21,7 @@ class _KeycloakAuthenticationRedirectScreenState
       ScaffoldMessenger.of(
         context,
       ).showSnackBar(const SnackBar(content: Text('Login Completed')));
-      Navigator.pushReplacementNamed(context, Routes.home);
+      Navigator.pushReplacementNamed(context, Routes.homeRoute);
     } else {
       ScaffoldMessenger.of(
         context,

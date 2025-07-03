@@ -48,6 +48,9 @@ dependencies:
   ntfluttery: ^0.1.1
   http: ^1.4.0
   awesome_notifications: ^0.10.1
+  video_player: ^2.10.0
+  qr_flutter: ^4.1.0
+  chewie: ^1.12.1
 
 dev_dependencies:
   flutter_test:

@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_appauth/flutter_appauth.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:ntavideofeedapp/AssetManager/assets_manager.dart';
+import 'package:ntavideofeedapp/Utils/global_variable.dart';
+import 'package:ntavideofeedapp/Utils/language_enum.dart';
 import 'package:ntavideofeedapp/controller/language_change_controller.dart';
 import 'package:ntavideofeedapp/l10n/app_localizations.dart';
 import 'package:ntavideofeedapp/presentation/page/Keycloak%20Redirect/keycloak_authentication_redirect.dart';
@@ -10,7 +15,7 @@ import 'package:ntavideofeedapp/service/ntfy_service.dart';
 import 'package:provider/provider.dart';
 
 class ExampleScreen extends StatefulWidget {
-  const ExampleScreen({super.key});
+  ExampleScreen({super.key});
 
   @override
   State<ExampleScreen> createState() => _ExampleScreenState();
@@ -160,10 +165,18 @@ class _ExampleScreenState extends State<ExampleScreen> {
               }),
             ),
           ),
+          Text(
+            GlobalUse.userRole,
+            style: TextStyle(fontSize: MediaQuery.sizeOf(context).width * 0.2),
+          ),
           ElevatedButton(
             onPressed: () async {
               await authService.logout();
-              Navigator.pushReplacementNamed(context, Routes.login);
+              Navigator.pushNamedAndRemoveUntil(
+                context,
+                Routes.loginRoute,
+                (Route<dynamic> route) => false,
+              );
             },
             child: Text("Logout"),
           ),

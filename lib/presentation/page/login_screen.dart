@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:ntavideofeedapp/ServiceLocator/service_locator.dart';
 import 'package:ntavideofeedapp/service/auth_example.dart';
 import 'package:ntavideofeedapp/service/auth_service.dart';
 
 class LoginScreen extends StatelessWidget {
-  final AuthService authService = AuthService();
+  final AuthService authService = serviceLocator<AuthService>();
 
   LoginScreen({super.key});
 

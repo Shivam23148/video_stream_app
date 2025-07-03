@@ -1,4 +1,10 @@
 class Routes {
-  static const login = '/login';
-  static const home = 'home';
+  static const splashRoute = '/';
+  static const loginRoute = '/login';
+  static const homeRoute = 'home';
+  static const languageSelectionRoute = '/languageSelection';
+  static const deviceListRoute = '/deviceList';
+
+  //Test
+  static const testVideoPlayerRoute = '/testPlayer';
 }

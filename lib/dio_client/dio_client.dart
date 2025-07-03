@@ -1,41 +1,31 @@
 import 'package:dio/dio.dart';
-import 'package:ntavideofeedapp/service/auth_service.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:ntavideofeedapp/ServiceLocator/service_locator.dart';
 
 class DioClient {
-  final Dio _dio = Dio();
-  final AuthService authService;
+  final Dio dio = Dio();
 
-  DioClient(this.authService) {
-    _dio.interceptors.add(
+  final FlutterSecureStorage flutterSecureStorage =
+      serviceLocator<FlutterSecureStorage>();
+  DioClient() {
+    dio.options.baseUrl =
+        'https://euc1.auth.ac/auth/realms/bitvividkeytest/protocol/openid-connect';
+    dio.options.connectTimeout = const Duration(seconds: 10);
+    dio.options.receiveTimeout = const Duration(seconds: 10);
+    dio.interceptors.add(
       InterceptorsWrapper(
-        onRequest: (options, handler) async {
-          final tokens = await authService.getStoredTokens();
-          if (tokens != null && tokens.isAccessTokenValid) {
-            options.headers['Authorization'] = 'Bearer ${tokens.accessToken}';
+        onRequest: (option, handler) async {
+          final token = await flutterSecureStorage.read(key: 'access_token');
+          if (token != null) {
+            option.headers['Authorization'] = 'Bearer $token';
           }
-          return handler.next(options);
+          return handler.next(option);
         },
-        onError: (error, handler) async {
-          if (error.response?.statusCode == 401) {
-            final tokens = await authService.getStoredTokens();
-            if (tokens != null && tokens.isRefreshTokenValid) {
-              final newAccessToken = await authService.refreshAccessToken(
-                tokens.refreshToken,
-              );
-              if (newAccessToken != null) {
-                // Retry original request with new token
-                error.requestOptions.headers['Authorization'] =
-                    'Bearer $newAccessToken';
-                final cloneReq = await _dio.fetch(error.requestOptions);
-                return handler.resolve(cloneReq);
-              }
-            }
-          }
-          return handler.next(error);
+        onError: (e, handler) {
+          return handler.next(e);
         },
       ),
     );
   }
-
-  Dio get client => _dio;
+  Dio get client => dio;
 }
