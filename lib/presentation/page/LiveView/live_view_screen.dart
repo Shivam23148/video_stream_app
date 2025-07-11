@@ -1,9 +1,7 @@
-import 'dart:async';
-
-import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:ntavideofeedapp/core/routes/route_names.dart';
+import 'package:flutter_vlc_player/flutter_vlc_player.dart';
+import 'package:ntavideofeedapp/CleanArchitecture+Bloc/core/router/route_names.dart';
 import 'package:video_player/video_player.dart';
 
 class LiveViewScreen extends StatefulWidget {
@@ -21,13 +19,8 @@ class _LiveViewScreenState extends State<LiveViewScreen> {
   Widget build(BuildContext context) {
     int crossAxisCount = int.tryParse(dropdownValue.split('X').first) ?? 2;
     return Scaffold(
+      appBar: AppBar(backgroundColor: Colors.white, title: Text("Live View")),
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        title: Text("Multi View"),
-        centerTitle: true,
-        automaticallyImplyLeading: false,
-      ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
@@ -39,6 +32,7 @@ class _LiveViewScreenState extends State<LiveViewScreen> {
               ),
               itemBuilder: (context, index) {
                 final url = selectedStream[index];
+                print("Url is ${url}");
                 return GestureDetector(
                   onLongPress: (url == null || url.isEmpty)
                       ? null
@@ -47,7 +41,8 @@ class _LiveViewScreenState extends State<LiveViewScreen> {
                             context,
                             MaterialPageRoute(
                               builder: (context) =>
-                                  LiveStreamFullScreen(url: url!),
+                                  /*     LiveStreamFullScreen(url: url), */
+                                  LiveVideoTesting(url: url),
                             ),
                           );
                         },
@@ -130,6 +125,11 @@ class _LiveVideoTileState extends State<LiveVideoTile> {
           controller.play();
         });
       });
+    controller.addListener(() {
+      if (controller.value.hasError) {
+        print('Video Error: ${controller.value.errorDescription}');
+      }
+    });
   }
 
   @override
@@ -146,7 +146,7 @@ class _LiveVideoTileState extends State<LiveVideoTile> {
             aspectRatio: controller.value.aspectRatio,
             child: VideoPlayer(controller),
           )
-        : Center(child: CircularProgressIndicator());
+        : Center(child: CircularProgressIndicator(color: Colors.blue));
   }
 }
 
@@ -159,186 +159,77 @@ class LiveStreamFullScreen extends StatefulWidget {
 }
 
 class _LiveStreamFullScreenState extends State<LiveStreamFullScreen> {
-  late VideoPlayerController videoPlayerController;
-  late ChewieController chewieController;
-  late DateTime startStreamTime;
-
-  int currentSeekValue = 0;
-  bool userIsDragging = false;
-  Timer? sliderTimer;
+  late VlcPlayerController vlcPlayerController;
+  bool isMuted = false;
 
   @override
   void initState() {
     super.initState();
-    SystemChrome.setPreferredOrientations([DeviceOrientation.landscapeLeft]);
-
-    startStreamTime = DateTime.now();
-
-    videoPlayerController = VideoPlayerController.networkUrl(
-      Uri.parse(widget.url),
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.landscapeLeft,
+      DeviceOrientation.landscapeRight,
+    ]);
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
+    vlcPlayerController = VlcPlayerController.network(
+      widget.url,
+      hwAcc: HwAcc.full,
+      autoPlay: true,
+      options: VlcPlayerOptions(),
     );
-    videoPlayerController.initialize().then((_) {
-      // Setup ChewieController
-      chewieController = ChewieController(
-        videoPlayerController: videoPlayerController,
-        autoPlay: true,
-        looping: false,
-        allowMuting: false,
-        allowPlaybackSpeedChanging: false,
-        showControls: true, // we'll build our own controls
-      );
-
-      setState(() {
-        startStreamTime = DateTime.now();
-      });
-
-      sliderTimer = Timer.periodic(Duration(seconds: 1), (_) {
-        final livePos = DateTime.now()
-            .difference(startStreamTime)
-            .inMilliseconds;
-
-        if (!userIsDragging && currentSeekValue < livePos) {
-          setState(() {
-            currentSeekValue = livePos;
-            print(
-              "Timer updated currentSeekValue to livePos: $currentSeekValue",
-            );
-          });
-        }
-      });
-    });
   }
 
   @override
   void dispose() {
-    sliderTimer?.cancel();
-    chewieController.dispose();
-    videoPlayerController.dispose();
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+    vlcPlayerController.stop();
+    vlcPlayerController.dispose();
+
     super.dispose();
   }
 
-  String formatDuration(Duration d) {
-    String twoDigits(int n) => n.toString().padLeft(2, '0');
-    return "${twoDigits(d.inMinutes)}:${twoDigits(d.inSeconds % 60)}";
+  void toggleMute() {
+    if (isMuted) {
+      vlcPlayerController.setVolume(100);
+    } else {
+      vlcPlayerController.setVolume(0);
+    }
+    setState(() {
+      isMuted = !isMuted;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    return videoPlayerController.value.isInitialized
-        ? Stack(
-            children: [
-              AspectRatio(
-                aspectRatio: videoPlayerController.value.aspectRatio,
-                child: Chewie(controller: chewieController),
-              ),
-              Positioned(
-                bottom: 30,
-                left: 20,
-                right: 20,
-                child: Builder(
-                  builder: (context) {
-                    final livePosition = DateTime.now().difference(
-                      startStreamTime,
-                    );
-                    final livePosMs = livePosition.inMilliseconds;
-
-                    final seekMin = (livePosMs - 30000).clamp(0, livePosMs);
-                    final seekMax = livePosMs;
-
-                    final sliderValue = currentSeekValue
-                        .clamp(seekMin, seekMax)
-                        .toDouble();
-
-                    return Material(
-                      color: Colors.black54,
-                      borderRadius: BorderRadius.circular(8),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Slider(
-                            min: seekMin.toDouble(),
-                            max: seekMax.toDouble(),
-                            value: sliderValue,
-                            onChangeStart: (value) {
-                              userIsDragging = true;
-                              print("User started dragging at $value");
-                            },
-                            onChanged: (newValue) {
-                              setState(() {
-                                currentSeekValue = newValue.toInt();
-                              });
-                              videoPlayerController
-                                  .seekTo(
-                                    Duration(milliseconds: currentSeekValue),
-                                  )
-                                  .then((_) => videoPlayerController.play());
-                              print("User dragging at $newValue");
-                            },
-                            onChangeEnd: (value) {
-                              userIsDragging = false;
-                              final livePos = DateTime.now()
-                                  .difference(startStreamTime)
-                                  .inMilliseconds;
-
-                              if ((livePos - value) < 2000) {
-                                setState(() {
-                                  currentSeekValue = livePos;
-                                });
-                              }
-                              print("User stopped dragging at $value");
-                            },
-                            activeColor: Colors.red,
-                            inactiveColor: Colors.white24,
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 12.0,
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  formatDuration(
-                                    Duration(milliseconds: currentSeekValue),
-                                  ),
-                                  style: TextStyle(color: Colors.white),
-                                ),
-                                TextButton(
-                                  onPressed: () {
-                                    final livePos = DateTime.now().difference(
-                                      startStreamTime,
-                                    );
-                                    setState(() {
-                                      currentSeekValue = livePos.inMilliseconds;
-                                    });
-                                    videoPlayerController.seekTo(livePos).then((
-                                      _,
-                                    ) {
-                                      videoPlayerController.play();
-                                    });
-                                  },
-                                  child: Text(
-                                    "LIVE",
-                                    style: TextStyle(
-                                      color: (sliderValue >= seekMax - 2000)
-                                          ? Colors.red
-                                          : Colors.white,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    );
-                  },
-                ),
-              ),
-            ],
-          )
-        : Center(child: CircularProgressIndicator());
+    return Stack(
+      children: [
+        VlcPlayer(
+          controller: vlcPlayerController,
+          aspectRatio: 16 / 9,
+          placeholder: const Center(child: CircularProgressIndicator()),
+        ),
+        Positioned(
+          top: 20,
+          right: 20,
+          child: IconButton(
+            icon: Icon(
+              isMuted ? Icons.volume_off : Icons.volume_up,
+              color: Colors.white,
+              size: 30,
+            ),
+            onPressed: toggleMute,
+          ),
+        ),
+        Positioned(
+          top: 20,
+          left: 20,
+          child: IconButton(
+            icon: const Icon(Icons.arrow_back, color: Colors.white, size: 30),
+            onPressed: () => Navigator.pop(context),
+          ),
+        ),
+      ],
+    );
   }
 }
 
@@ -448,6 +339,45 @@ class _FullScreenGridViewScreenState extends State<FullScreenGridViewScreen> {
           ),
         ],
       ),
+    );
+  }
+}
+
+class LiveVideoTesting extends StatefulWidget {
+  final String url;
+
+  const LiveVideoTesting({super.key, required this.url});
+  State<LiveVideoTesting> createState() => _LiveVideoTestingState();
+}
+
+class _LiveVideoTestingState extends State<LiveVideoTesting> {
+  late VlcPlayerController vlcPlayerController;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    vlcPlayerController = VlcPlayerController.network(
+      widget.url,
+      hwAcc: HwAcc.full,
+      autoPlay: true,
+      options: VlcPlayerOptions(),
+    );
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    vlcPlayerController.stop();
+    vlcPlayerController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return VlcPlayer(
+      controller: vlcPlayerController,
+      aspectRatio: 16 / 9,
+      placeholder: Center(child: CircularProgressIndicator(color: Colors.blue)),
     );
   }
 }

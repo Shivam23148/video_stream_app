@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:ntavideofeedapp/core/ServiceLocator/service_locator.dart';
+import 'package:ntavideofeedapp/CleanArchitecture+Bloc/config/service_locator.dart';
 
 class DioClient {
   final Dio dio = Dio();

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:ntavideofeedapp/model/CameraGroup/group_model.dart';
+import 'package:ntavideofeedapp/presentation/page/Example/Api_Call_Test.dart';
 
 class DeviceListScreen extends StatefulWidget {
   const DeviceListScreen({super.key});
@@ -8,26 +10,60 @@ class DeviceListScreen extends StatefulWidget {
 }
 
 class _DeviceListScreenState extends State<DeviceListScreen> {
-  final List<String> imageUrls = List.generate(
-    10,
-    (index) =>
-        'https://cdn.pixabay.com/photo/2018/08/04/11/30/draw-3583548_1280.png',
-  );
+  List<CamerasModel> cameras = [];
+  final ApiService apiService = ApiService();
+  bool isLoading = true;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    print("Device list init");
+    loadCameras();
+  }
+
+  void loadCameras() async {
+    final result = await apiService.fetchCameras();
+    print("Api result is : ${result.first.location}");
+    setState(() {
+      cameras = result;
+      isLoading = false;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Select Camera")),
-      body: ListView.builder(
-        itemCount: imageUrls.length,
-        itemBuilder: (context, index) {
-          final imageUrl = imageUrls[index];
-          return ListTile(
-            leading: Image.network(imageUrl),
-            title: Text("Camera ${index + 1}"),
-            onTap: () => Navigator.pop(context, "https://live.143b.ch/cam/flux/ts:abr.m3u8"), 
-          );
-        },
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        title: Text("Select Camera"),
       ),
+      body: isLoading
+          ? const Center(child: CircularProgressIndicator())
+          : ListView.builder(
+              itemCount: cameras.length,
+              itemBuilder: (context, index) {
+                final cam = cameras[index];
+                return ListTile(
+                  leading: Text((index + 1).toString()),
+                  title: Text(cam.location),
+                  subtitle: Text(cam.area),
+                  trailing: Text("Camera Name: ${cam.cameraName}"),
+                  onTap: () {
+                    print("Camera name");
+                    /* Navigator.pop(
+                      context,
+                      "https://103.159.169.170:8443/go2rtc/8/api/stream.m3u8?src=agrawaldistilleriesbottlingroom&mp4=flac",
+                    ); */
+                    // HTTPS
+                    Navigator.pop(
+                      context,
+                      "https://xvms.irishidev.com/api/go2rtc/${cam.groupId}/api/stream.m3u8?src=${cam.cameraName}&mp4",
+                    );
+                  },
+                );
+              },
+            ),
     );
   }
 }

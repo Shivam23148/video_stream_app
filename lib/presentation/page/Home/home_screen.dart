@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:ntavideofeedapp/core/ServiceLocator/service_locator.dart';
+import 'package:ntavideofeedapp/CleanArchitecture+Bloc/config/service_locator.dart';
 import 'package:ntavideofeedapp/core/Utils/language_enum.dart';
-import 'package:ntavideofeedapp/core/controller/language_change_controller.dart';
+import 'package:ntavideofeedapp/CleanArchitecture+Bloc/core/localization/language_change_controller.dart';
 import 'package:ntavideofeedapp/presentation/page/example.dart';
-import 'package:ntavideofeedapp/core/routes/route_names.dart';
-import 'package:ntavideofeedapp/service/auth_service.dart';
+import 'package:ntavideofeedapp/CleanArchitecture+Bloc/core/router/route_names.dart';
+import 'package:ntavideofeedapp/CleanArchitecture+Bloc/core/service/auth_service.dart';
 import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {

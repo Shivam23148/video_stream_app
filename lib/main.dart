@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:ntavideofeedapp/core/ServiceLocator/service_locator.dart';
-import 'package:ntavideofeedapp/core/controller/language_change_controller.dart';
+import 'package:ntavideofeedapp/CleanArchitecture+Bloc/config/service_locator.dart';
+import 'package:ntavideofeedapp/CleanArchitecture+Bloc/core/localization/language_change_controller.dart';
+import 'package:ntavideofeedapp/CleanArchitecture+Bloc/shared/utils/snackbar_util.dart';
 import 'package:ntavideofeedapp/presentation/page/Example/example_screen.dart';
 import 'package:ntavideofeedapp/presentation/page/example.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:ntavideofeedapp/core/l10n/app_localizations.dart';
-import 'package:ntavideofeedapp/core/routes/route_generator.dart';
-import 'package:ntavideofeedapp/core/routes/route_names.dart';
-import 'package:ntavideofeedapp/service/notification_service.dart';
+import 'package:ntavideofeedapp/CleanArchitecture+Bloc/core/localization/app_localizations.dart';
+import 'package:ntavideofeedapp/CleanArchitecture+Bloc/core/router/route_generator.dart';
+import 'package:ntavideofeedapp/CleanArchitecture+Bloc/core/router/route_names.dart';
+import 'package:ntavideofeedapp/CleanArchitecture+Bloc/core/service/notification_service.dart';
 import 'package:ntfluttery/ntfluttery.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -50,6 +51,7 @@ class MyApp extends StatelessWidget {
           return MaterialApp(
             title: 'Flutter Demo',
             locale: provider.appLocale,
+            scaffoldMessengerKey: SnackbarUtil.messangerKey,
             localizationsDelegates: [
               AppLocalizations.delegate,
               GlobalMaterialLocalizations.delegate,

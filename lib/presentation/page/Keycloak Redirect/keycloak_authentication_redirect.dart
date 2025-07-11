@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:ntavideofeedapp/core/ServiceLocator/service_locator.dart';
-import 'package:ntavideofeedapp/core/l10n/app_localizations.dart';
-import 'package:ntavideofeedapp/core/routes/route_names.dart';
-import 'package:ntavideofeedapp/service/auth_service.dart';
+import 'package:ntavideofeedapp/CleanArchitecture+Bloc/config/service_locator.dart';
+import 'package:ntavideofeedapp/CleanArchitecture+Bloc/core/localization/app_localizations.dart';
+import 'package:ntavideofeedapp/CleanArchitecture+Bloc/core/router/route_names.dart';
+import 'package:ntavideofeedapp/CleanArchitecture+Bloc/core/service/auth_service.dart';
 
 class KeycloakAuthenticationRedirectScreen extends StatefulWidget {
   const KeycloakAuthenticationRedirectScreen({super.key});

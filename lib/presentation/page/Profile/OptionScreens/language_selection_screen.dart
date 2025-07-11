@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:ntavideofeedapp/CleanArchitecture+Bloc/shared/widgets/selection_button.dart';
 import 'package:ntavideofeedapp/core/Utils/language_enum.dart';
-import 'package:ntavideofeedapp/core/controller/language_change_controller.dart';
+import 'package:ntavideofeedapp/CleanArchitecture+Bloc/core/localization/language_change_controller.dart';
 import 'package:provider/provider.dart';
 
 class LanguageSelectionScreen extends StatefulWidget {
@@ -69,6 +70,12 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
         false;
   }
 
+  void onLanguageSelected(Language lang) {
+    setState(() {
+      selectLanguage = lang;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return PopScope(
@@ -100,23 +107,18 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
             ),
           ],
         ),
-        body: Column(
+        body: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            RadioListTile<Language>(
-              title: Text("English"),
-              value: Language.english,
-              groupValue: selectLanguage,
-              onChanged: (value) => setState(() {
-                selectLanguage = value;
-              }),
+            SelectionButton(
+              label: 'English',
+              isButtonPressed: selectLanguage == Language.english,
+              onTap: () => onLanguageSelected(Language.english),
             ),
-            RadioListTile<Language>(
-              title: Text("Hindi"),
-              value: Language.hindi,
-              groupValue: selectLanguage,
-              onChanged: (value) => setState(() {
-                selectLanguage = value;
-              }),
+            SelectionButton(
+              label: 'हिन्दी',
+              isButtonPressed: selectLanguage == Language.hindi,
+              onTap: () => onLanguageSelected(Language.hindi),
             ),
           ],
         ),

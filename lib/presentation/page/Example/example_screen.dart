@@ -4,14 +4,15 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:ntavideofeedapp/core/AssetManager/assets_manager.dart';
 import 'package:ntavideofeedapp/core/Utils/global_variable.dart';
 import 'package:ntavideofeedapp/core/Utils/language_enum.dart';
-import 'package:ntavideofeedapp/core/controller/language_change_controller.dart';
-import 'package:ntavideofeedapp/core/l10n/app_localizations.dart';
+import 'package:ntavideofeedapp/CleanArchitecture+Bloc/core/localization/language_change_controller.dart';
+import 'package:ntavideofeedapp/CleanArchitecture+Bloc/core/localization/app_localizations.dart';
+import 'package:ntavideofeedapp/presentation/page/Example/Api_Call_Test.dart';
 import 'package:ntavideofeedapp/presentation/page/Keycloak%20Redirect/keycloak_authentication_redirect.dart';
 import 'package:ntavideofeedapp/presentation/page/example.dart';
-import 'package:ntavideofeedapp/core/routes/route_names.dart';
-import 'package:ntavideofeedapp/service/auth_service.dart';
-import 'package:ntavideofeedapp/service/notification_service.dart';
-import 'package:ntavideofeedapp/service/ntfy_service.dart';
+import 'package:ntavideofeedapp/CleanArchitecture+Bloc/core/router/route_names.dart';
+import 'package:ntavideofeedapp/CleanArchitecture+Bloc/core/service/auth_service.dart';
+import 'package:ntavideofeedapp/CleanArchitecture+Bloc/core/service/notification_service.dart';
+import 'package:ntavideofeedapp/CleanArchitecture+Bloc/core/service/ntfy_service.dart';
 import 'package:provider/provider.dart';
 
 class ExampleScreen extends StatefulWidget {
@@ -179,6 +180,12 @@ class _ExampleScreenState extends State<ExampleScreen> {
               );
             },
             child: Text("Logout"),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              print("Api Call Button tapped");
+            },
+            child: Text("Call Api"),
           ),
         ],
       ),
