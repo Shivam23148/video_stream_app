@@ -1,5 +1,7 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:logger/logger.dart';
 import 'package:ntavideofeedapp/CleanArchitecture+Bloc/config/service_locator.dart';
 import 'package:ntavideofeedapp/CleanArchitecture+Bloc/core/localization/language_change_controller.dart';
 import 'package:ntavideofeedapp/CleanArchitecture+Bloc/shared/utils/snackbar_util.dart';
@@ -14,7 +16,19 @@ import 'package:ntfluttery/ntfluttery.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+var logger = Logger(
+  level: kReleaseMode ? Level.warning : Level.debug,
+  printer: PrettyPrinter(
+    methodCount: 2,
+    errorMethodCount: 8,
+    lineLength: 120,
+    colors: true,
+    dateTimeFormat: DateTimeFormat.onlyTimeAndSinceStart,
+  ),
+);
+
 void main() async {
+  logger.i("App Started ");
   WidgetsFlutterBinding.ensureInitialized();
   setupLocator();
   await NotificationService().configuration();
@@ -29,6 +43,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    logger.i("App UI is Building");
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(

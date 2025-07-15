@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:ntavideofeedapp/CleanArchitecture+Bloc/config/service_locator.dart';
 import 'package:ntavideofeedapp/CleanArchitecture+Bloc/core/service/auth_example.dart';
 import 'package:ntavideofeedapp/CleanArchitecture+Bloc/core/service/auth_service.dart';
+import 'package:ntavideofeedapp/main.dart';
 
 class LoginScreen extends StatelessWidget {
   final AuthService authService = serviceLocator<AuthService>();
@@ -36,9 +37,9 @@ class LoginScreen extends StatelessWidget {
               const SizedBox(height: 16),
               TextButton(
                 onPressed: () async {
-                  print("Logout button pressed");
+                  logger.i("Logout button pressed");
                   await authService.logout();
-                  print("Logout process completed");
+                  logger.i("Logout process completed");
                 },
                 child: const Text('Logout'),
               ),

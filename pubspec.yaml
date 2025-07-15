@@ -52,6 +52,7 @@ dependencies:
   video_player: ^2.10.0
   flutter_bloc: ^9.1.1
   flutter_vlc_player: ^7.4.3
+  logger: ^2.6.0
 
 dev_dependencies:
   flutter_test:

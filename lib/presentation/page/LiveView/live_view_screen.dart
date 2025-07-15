@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_vlc_player/flutter_vlc_player.dart';
 import 'package:ntavideofeedapp/CleanArchitecture+Bloc/core/router/route_names.dart';
+import 'package:ntavideofeedapp/main.dart';
 import 'package:video_player/video_player.dart';
 
 class LiveViewScreen extends StatefulWidget {
@@ -32,7 +33,7 @@ class _LiveViewScreenState extends State<LiveViewScreen> {
               ),
               itemBuilder: (context, index) {
                 final url = selectedStream[index];
-                print("Url is ${url}");
+                logger.d("Url is $url");
                 return GestureDetector(
                   onLongPress: (url == null || url.isEmpty)
                       ? null
@@ -127,7 +128,7 @@ class _LiveVideoTileState extends State<LiveVideoTile> {
       });
     controller.addListener(() {
       if (controller.value.hasError) {
-        print('Video Error: ${controller.value.errorDescription}');
+        logger.d('Video Error: ${controller.value.errorDescription}');
       }
     });
   }
@@ -282,7 +283,7 @@ class _FullScreenGridViewScreenState extends State<FullScreenGridViewScreen> {
 
     final tileWidth = screenWidth / crossAxisCount;
     final tileHeight = screenHeight / crossAxisCount;
-    print("Total items : ${totalItems}");
+    logger.d("Total items : ${totalItems}");
     // TODO: implement build
     return Scaffold(
       backgroundColor: Colors.black,

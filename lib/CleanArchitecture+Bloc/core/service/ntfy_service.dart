@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:ntavideofeedapp/main.dart';
 import 'package:ntfluttery/ntfluttery.dart';
 import 'package:http/http.dart' as http;
 
@@ -76,15 +77,15 @@ class NtfyService {
           (line) {
             if (line.trim().isNotEmpty) {
               final message = json.decode(line);
-              print('New Message: $message');
+              logger.d('New Message: $message');
               onMessage(message);
             }
           },
           onError: (e) {
-            print("Error: $e");
+            logger.e("Error: $e");
           },
           onDone: () {
-            print("Stream Closed");
+            logger.i("Stream Closed");
           },
         );
   }

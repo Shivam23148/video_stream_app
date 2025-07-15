@@ -6,7 +6,8 @@ import 'package:ntavideofeedapp/core/Utils/global_variable.dart';
 import 'package:ntavideofeedapp/core/Utils/language_enum.dart';
 import 'package:ntavideofeedapp/CleanArchitecture+Bloc/core/localization/language_change_controller.dart';
 import 'package:ntavideofeedapp/CleanArchitecture+Bloc/core/localization/app_localizations.dart';
-import 'package:ntavideofeedapp/presentation/page/Example/Api_Call_Test.dart';
+import 'package:ntavideofeedapp/CleanArchitecture+Bloc/features/device_list/data/services/Api_Call_Test.dart';
+import 'package:ntavideofeedapp/main.dart';
 import 'package:ntavideofeedapp/presentation/page/Keycloak%20Redirect/keycloak_authentication_redirect.dart';
 import 'package:ntavideofeedapp/presentation/page/example.dart';
 import 'package:ntavideofeedapp/CleanArchitecture+Bloc/core/router/route_names.dart';
@@ -33,14 +34,14 @@ class _ExampleScreenState extends State<ExampleScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    print("Init state called");
+    logger.i("Init state called");
 
     NotificationService().checkingPermission(context);
 
     NotificationService().startListeningNotificationEvents();
     ntfyService.streamNtfy(
       onMessage: (message) {
-        print("Message list : ${message}");
+        logger.d("Message list : $message");
         NotificationService().createlocalNotification(
           title: message['title'] ?? 'New Message',
           body: message['message'] ?? 'You have a new message',
@@ -48,7 +49,7 @@ class _ExampleScreenState extends State<ExampleScreen> {
         );
         setState(() {
           messages.add(message);
-          print("Message on ui is : $message");
+          logger.d("Message on ui is : $message");
         });
       },
     );
@@ -57,7 +58,7 @@ class _ExampleScreenState extends State<ExampleScreen> {
   @override
   void dispose() {
     // TODO: implement dispose
-    print("Dispose called , cancelling subscription");
+    logger.d("Dispose called , cancelling subscription");
     ntfyService.dispose();
     super.dispose();
   }
@@ -94,7 +95,7 @@ class _ExampleScreenState extends State<ExampleScreen> {
                   if (Language.english.name == item.name) {
                     provider.changeLanguage(Locale('en'));
                   } else {
-                    print("Hindi button pressed");
+                    logger.i("Hindi button pressed");
                     provider.changeLanguage(Locale('hi'));
                   }
                 },
@@ -183,7 +184,7 @@ class _ExampleScreenState extends State<ExampleScreen> {
           ),
           ElevatedButton(
             onPressed: () {
-              print("Api Call Button tapped");
+              logger.i("Api Call Button tapped");
             },
             child: Text("Call Api"),
           ),

@@ -8,6 +8,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:ntavideofeedapp/CleanArchitecture+Bloc/config/service_locator.dart';
 import 'package:ntavideofeedapp/core/Utils/global_variable.dart';
+import 'package:ntavideofeedapp/main.dart';
 import 'package:ntavideofeedapp/model/token_model.dart';
 import 'package:http/http.dart' as http;
 
@@ -227,7 +228,7 @@ class DeviceFlowAuthService {
       headers: {'Content-Type': 'application/x-www-form-urlencoded'},
       body: {'client_id': clientId, 'scope': 'openid offline_access'},
     );
-    print(
+    logger.d(
       "Request Device Code inside Device Flow auth service: ${response.body} ",
     );
 
@@ -294,7 +295,7 @@ class DeviceFlowAuthService {
         },
       );
       final data = jsonDecode(response.body);
-      print("Polling response is :$data");
+      logger.d("Polling response is :$data");
       if (response.statusCode == 200) {
         await secureStorage.write(
           key: 'access_token',
@@ -316,9 +317,9 @@ class DeviceFlowAuthService {
 
   Future<String?> refreshAccessToken() async {
     final refreshToken = await secureStorage.read(key: 'refresh_token');
-    print("Refresh token is from device flow auth service: ${refreshToken}");
+    logger.d("Refresh token is from device flow auth service: $refreshToken");
     if (refreshToken == null) return null;
-    print("Token Refreshed Auth Service: $refreshToken");
+    logger.d("Token Refreshed Auth Service: $refreshToken");
     final response = await http.post(
       tokenUrl,
       headers: {'Content-Type': 'application/x-www-form-urlencoded'},
@@ -349,22 +350,22 @@ class DeviceFlowAuthService {
 
   Future<String?> getAccessToken() async {
     final accessToken = await secureStorage.read(key: 'access_token');
-    print("Access Token from auth service: $accessToken");
+    logger.d("Access Token from auth service: $accessToken");
     return accessToken;
   }
 
   Future<void> getRole() async {
-    print("Role fetching start");
+    logger.i("Role fetching start");
     final accessToken = await secureStorage.read(key: 'access_token');
     if (accessToken == null || !accessToken.contains('.')) {
-      print("Invalid or null token");
+      logger.i("Invalid or null token");
       return;
     }
 
     Map<String, dynamic> decodedToken = JwtDecoder.decode(accessToken);
 
     final roles = decodedToken['realm_access']['roles'] ?? [];
-    print("Role fetched auth service: $roles");
+    logger.d("Role fetched auth service: $roles");
 
     if (roles.contains('user_admin')) {
       GlobalUse.userRole = 'Admin';
@@ -379,7 +380,7 @@ class DeviceFlowAuthService {
     final accessToken = await secureStorage.read(key: 'access_token');
 
     if (accessToken == null || JwtDecoder.isExpired(accessToken)) {
-      print("Access token expired. Attempting to refresh");
+      logger.i("Access token expired. Attempting to refresh");
       return await refreshAccessToken();
     }
 

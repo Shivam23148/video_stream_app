@@ -5,6 +5,7 @@ import 'package:ntavideofeedapp/CleanArchitecture+Bloc/config/service_locator.da
 import 'package:ntavideofeedapp/CleanArchitecture+Bloc/core/service/auth_service.dart';
 import 'package:ntavideofeedapp/CleanArchitecture+Bloc/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:ntavideofeedapp/CleanArchitecture+Bloc/shared/utils/snackbar_util.dart';
+import 'package:ntavideofeedapp/main.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -31,14 +32,14 @@ class AuthScreen extends StatelessWidget {
         appBar: AppBar(backgroundColor: Colors.white),
         body: BlocConsumer<AuthBloc, AuthState>(
           listener: (context, state) async {
-            print("Auth screen state: $state");
+            logger.i("Auth screen state: $state");
             if (state is AuthFailure) {
               SnackbarUtil.showSnackbar(
                 message: "Login Failure: Something went wrong",
                 backgroundColor: Colors.red,
               );
 
-              print("Login Fail on Auth Screen error: ${state.emessage}");
+              logger.e("Login Fail error: ${state.emessage}");
             }
 
             if (state is DeviceVerificationSendState) {
@@ -51,7 +52,7 @@ class AuthScreen extends StatelessWidget {
               final sp = await SharedPreferences.getInstance();
               final isLangSelected =
                   sp.getBool('is_language_selected') ?? false;
-              print("Lanuage selected bool value is ${isLangSelected}");
+              logger.d("Lanuage selected bool value is $isLangSelected");
               if (!isLangSelected) {
                 Navigator.pushNamedAndRemoveUntil(
                   context,
@@ -256,7 +257,7 @@ class AuthScreen extends StatelessWidget {
         )
       else
         const SizedBox(height: 16),
-      Container(
+      SizedBox(
         width: isSmall ? double.infinity : 300,
         child: Column(
           crossAxisAlignment: isSmall

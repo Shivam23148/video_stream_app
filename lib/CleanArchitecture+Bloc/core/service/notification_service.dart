@@ -1,5 +1,6 @@
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
+import 'package:ntavideofeedapp/main.dart';
 
 class NotificationService {
   NotificationService._();
@@ -9,7 +10,7 @@ class NotificationService {
   final AwesomeNotifications awesomeNotifications = AwesomeNotifications();
 
   Future<void> configuration() async {
-    print("configuation for notification check");
+    logger.i("configuation for notification check");
     await awesomeNotifications.initialize(null, [
       NotificationChannel(
         channelKey: 'basic_channel',
@@ -78,7 +79,7 @@ class NotificationService {
   }
 
   Future<void> startListeningNotificationEvents() async {
-    print("check data with start listening");
+    logger.i("check data with start listening");
 
     AwesomeNotifications().setListeners(
       onActionReceivedMethod: onActionReceivedMethod,
@@ -91,24 +92,24 @@ class NotificationService {
   static Future<void> onNotifcationCreatedMethod(
     ReceivedNotification receivedNotifications,
   ) async {
-    print("onNotifcationCreatedMethod");
+    logger.i("onNotifcationCreatedMethod");
   }
 
   static Future<void> onActionReceivedMethod(
     ReceivedNotification receivedNotifications,
   ) async {
-    print("onActionReceivedMethod");
+    logger.i("onActionReceivedMethod");
   }
 
   static Future<void> onDismissActionReceivedMethod(
     ReceivedNotification receivedNotifications,
   ) async {
-    print("onDismissActionReceivedMethod");
+    logger.i("onDismissActionReceivedMethod");
   }
 
   static Future<void> onNotificationDisplayedMethod(
     ReceivedNotification receivedNotifications,
   ) async {
-    print("onNotificationDisplayedMethod");
+    logger.i("onNotificationDisplayedMethod");
   }
 }

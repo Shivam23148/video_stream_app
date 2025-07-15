@@ -5,6 +5,7 @@ import 'package:ntavideofeedapp/CleanArchitecture+Bloc/core/router/route_names.d
 import 'package:ntavideofeedapp/CleanArchitecture+Bloc/features/Playback/presentation/screen/playback_screen.dart';
 import 'package:ntavideofeedapp/CleanArchitecture+Bloc/features/customNavigation/presentation/cubit/navbar_cubit.dart';
 import 'package:ntavideofeedapp/CleanArchitecture+Bloc/features/customNavigation/presentation/screen/custom_navigationBar_Screen.dart';
+import 'package:ntavideofeedapp/main.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -42,7 +43,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         _navigateToPlayback();
         break;
       default:
-        print("No action defined for ${option}");
+        logger.d("No action defined for $option");
     }
   }
 
@@ -59,7 +60,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   void _navigateToProgile() {
-    print("Navigate to profile pressed");
+    logger.i("Navigate to profile pressed");
   }
 
   void _navigateToPlayback() {

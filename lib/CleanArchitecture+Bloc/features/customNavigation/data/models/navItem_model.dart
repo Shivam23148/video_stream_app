@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ntavideofeedapp/main.dart';
 
 class NavItem {
   final String id;
@@ -21,7 +22,7 @@ class NavItem {
       try {
         result.add(allItems.firstWhere((item) => item.id == id));
       } catch (e) {
-        print("Nav item with $id not found in allNavitems");
+        logger.e("Nav item with $id not found in allNavitems");
       }
     }
     return result;

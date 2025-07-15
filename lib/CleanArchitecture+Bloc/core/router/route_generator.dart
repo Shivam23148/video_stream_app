@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ntavideofeedapp/CleanArchitecture+Bloc/features/onboard/presentation/screen/onboard_screen.dart';
-import 'package:ntavideofeedapp/presentation/page/DeviceList/device_list_screen.dart';
+import 'package:ntavideofeedapp/CleanArchitecture+Bloc/features/device_list/presentation/screen/device_list_screen.dart';
 import 'package:ntavideofeedapp/presentation/page/Example/example_screen.dart';
 import 'package:ntavideofeedapp/presentation/page/Home/home_screen.dart';
 import 'package:ntavideofeedapp/CleanArchitecture+Bloc/features/auth/presentation/screens/auth_screen.dart';
