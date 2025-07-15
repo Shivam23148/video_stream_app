@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:ntavideofeedapp/CleanArchitecture+Bloc/features/device_list/data/models/group_model.dart';
-import 'package:ntavideofeedapp/CleanArchitecture+Bloc/features/device_list/data/services/Api_Call_Test.dart';
+import 'package:ntavideofeedapp/CleanArchitecture+Bloc/config/service_locator.dart';
 import 'package:ntavideofeedapp/CleanArchitecture+Bloc/features/device_list/presentation/bloc/device_list_bloc.dart';
 import 'package:ntavideofeedapp/main.dart';
 
@@ -16,7 +15,8 @@ class _DeviceListScreenState extends State<DeviceListScreen> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => DeviceListBloc()..add(FetchCameraEvent()),
+      create: (context) =>
+          serviceLocator<DeviceListBloc>()..add(FetchCameraEvent()),
       child: Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
@@ -35,14 +35,14 @@ class _DeviceListScreenState extends State<DeviceListScreen> {
                   final cam = cameras[index];
                   return ListTile(
                     leading: Text((index + 1).toString()),
-                    title: Text(cam.name),
-                    subtitle: Text(cam.name),
-                    trailing: Text("Camera Name: ${cam.name}"),
+                    title: Text(cam.area),
+                    subtitle: Text(cam.location),
+                    trailing: Text("Camera Name: ${cam.cameraName}"),
                     onTap: () {
-                      logger.d("Tapped on camera: ${cam.name}");
+                      logger.d("Tapped on camera: ${cam.location}");
                       Navigator.pop(
                         context,
-                        "https://xvms.irishidev.com/api/go2rtc/${cam.groupId}/api/stream.m3u8?src=${cam.name}&mp4",
+                        "https://xvms.irishidev.com/api/go2rtc/${cam.groupId}/api/stream.m3u8?src=${cam.cameraName}&mp4",
                       );
                     },
                   );

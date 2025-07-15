@@ -1,18 +1,14 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:logger/logger.dart';
 import 'package:ntavideofeedapp/CleanArchitecture+Bloc/config/service_locator.dart';
 import 'package:ntavideofeedapp/CleanArchitecture+Bloc/core/localization/language_change_controller.dart';
 import 'package:ntavideofeedapp/CleanArchitecture+Bloc/shared/utils/snackbar_util.dart';
-import 'package:ntavideofeedapp/presentation/page/Example/example_screen.dart';
-import 'package:ntavideofeedapp/presentation/page/example.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:ntavideofeedapp/CleanArchitecture+Bloc/core/localization/app_localizations.dart';
 import 'package:ntavideofeedapp/CleanArchitecture+Bloc/core/router/route_generator.dart';
 import 'package:ntavideofeedapp/CleanArchitecture+Bloc/core/router/route_names.dart';
 import 'package:ntavideofeedapp/CleanArchitecture+Bloc/core/service/notification_service.dart';
-import 'package:ntfluttery/ntfluttery.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -29,8 +25,9 @@ var logger = Logger(
 
 void main() async {
   logger.i("App Started ");
+
   WidgetsFlutterBinding.ensureInitialized();
-  setupLocator();
+  await setupLocator();
   await NotificationService().configuration();
   SharedPreferences sp = await SharedPreferences.getInstance();
   final String languageCode = sp.getString('language_code') ?? '';
@@ -60,9 +57,14 @@ class MyApp extends StatelessWidget {
       ],
       child: Consumer<LanguageChangeController>(
         builder: (context, provider, child) {
+          /*  logger.d(
+            "App Current Langauge is ${Localizations.localeOf(context)}",
+          ); */
           if (local.isEmpty) {
             provider.changeLanguage(Locale('en'));
           }
+          Locale deviceLanguage = WidgetsBinding.instance.window.locale;
+          logger.d("Device Language is $deviceLanguage");
           return MaterialApp(
             title: 'Flutter Demo',
             locale: provider.appLocale,

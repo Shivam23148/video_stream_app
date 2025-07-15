@@ -1,15 +1,17 @@
-import 'package:dio/dio.dart';
-import 'package:ntavideofeedapp/CleanArchitecture+Bloc/config/service_locator.dart';
-
+import 'package:ntavideofeedapp/CleanArchitecture+Bloc/core/constants/app_constants.dart';
+import 'package:ntavideofeedapp/CleanArchitecture+Bloc/core/constants/url_constants.dart';
+import 'package:ntavideofeedapp/CleanArchitecture+Bloc/core/network/dio_client.dart';
 import 'package:ntavideofeedapp/CleanArchitecture+Bloc/features/device_list/data/models/group_model.dart';
 import 'package:ntavideofeedapp/main.dart';
 
 class ApiService {
-  final Dio dio = serviceLocator<Dio>();
+  final DioClient dioClient;
+
+  ApiService(this.dioClient);
 
   Future<List<CamerasModel>> fetchCameras() async {
     try {
-      final response = await dio.get(
+      /* final response = await dio.get(
         'https://xvms.irishidev.com/api/group/',
         options: Options(
           headers: {
@@ -18,8 +20,16 @@ class ApiService {
                 'eEwlWsq6mNBvZU5NGKVxwCPgpX6Rx0xD2YH6DdRZCF1f3efoVyPnem9atDYb5OhW',
           },
         ),
+      ); */
+      logger.i('Api call started');
+      final response = await dioClient.get(
+        '${AppConstants.baseUrl}${UrlConstants.groupUrl}',
+        headers: {
+          'accept': 'application/json',
+          'X-CSRFTOKEN':
+              'eEwlWsq6mNBvZU5NGKVxwCPgpX6Rx0xD2YH6DdRZCF1f3efoVyPnem9atDYb5OhW',
+        },
       );
-
       final data = response.data;
       logger.d("Response of camera is : $data");
       final payload = data['payload'] as List;
