@@ -1,19 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_appauth/flutter_appauth.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:ntavideofeedapp/core/AssetManager/assets_manager.dart';
 import 'package:ntavideofeedapp/core/Utils/global_variable.dart';
 import 'package:ntavideofeedapp/core/Utils/language_enum.dart';
-import 'package:ntavideofeedapp/CleanArchitecture+Bloc/core/localization/language_change_controller.dart';
-import 'package:ntavideofeedapp/CleanArchitecture+Bloc/core/localization/app_localizations.dart';
-import 'package:ntavideofeedapp/CleanArchitecture+Bloc/features/device_list/data/data_sources/Api_Call_Test.dart';
+import 'package:ntavideofeedapp/clean_architecture_bloc/core/localization/language_change_controller.dart';
+import 'package:ntavideofeedapp/clean_architecture_bloc/core/localization/app_localizations.dart';
 import 'package:ntavideofeedapp/main.dart';
-import 'package:ntavideofeedapp/presentation/page/Keycloak%20Redirect/keycloak_authentication_redirect.dart';
-import 'package:ntavideofeedapp/presentation/page/example.dart';
-import 'package:ntavideofeedapp/CleanArchitecture+Bloc/core/router/route_names.dart';
-import 'package:ntavideofeedapp/CleanArchitecture+Bloc/core/service/auth_service.dart';
-import 'package:ntavideofeedapp/CleanArchitecture+Bloc/core/service/notification_service.dart';
-import 'package:ntavideofeedapp/CleanArchitecture+Bloc/core/service/ntfy_service.dart';
+import 'package:ntavideofeedapp/clean_architecture_bloc/core/router/route_names.dart';
+import 'package:ntavideofeedapp/clean_architecture_bloc/core/service/auth_service.dart';
+import 'package:ntavideofeedapp/clean_architecture_bloc/core/service/notification_service.dart';
+import 'package:ntavideofeedapp/clean_architecture_bloc/core/service/Ntfy/ntfy_service.dart';
 import 'package:provider/provider.dart';
 
 class ExampleScreen extends StatefulWidget {
@@ -133,7 +127,7 @@ class _ExampleScreenState extends State<ExampleScreen> {
         centerTitle: true,
         title: Text(AppLocalizations.of(context)!.exampleText),
       ),
-      body: /*  Column(
+      body: Column(
         children: [
           Expanded(
             child: ListView.builder(
@@ -147,14 +141,17 @@ class _ExampleScreenState extends State<ExampleScreen> {
               itemCount: messages.length,
             ),
           ),
-          ElevatedButton(onPressed: () {
-            NotificationService().createlocalNotification(
-          title: 'New Message',
-          body:  'You have a new message'
-        );
-          }, child: Text("Send Notification")),
+          ElevatedButton(
+            onPressed: () {
+              NotificationService().createlocalNotification(
+                title: 'New Message',
+                body: 'You have a new message',
+              );
+            },
+            child: Text("Send Notification"),
+          ),
         ],
-      ), */ Column(
+      ) /* Column(
         children: [
           Expanded(
             child: GridView.count(
@@ -189,7 +186,7 @@ class _ExampleScreenState extends State<ExampleScreen> {
             child: Text("Call Api"),
           ),
         ],
-      ),
+      ), */,
     );
   }
 }

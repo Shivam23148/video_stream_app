@@ -1,26 +1,23 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
-import 'package:ntavideofeedapp/CleanArchitecture+Bloc/config/service_locator.dart';
-import 'package:ntavideofeedapp/CleanArchitecture+Bloc/core/localization/language_change_controller.dart';
-import 'package:ntavideofeedapp/CleanArchitecture+Bloc/shared/utils/snackbar_util.dart';
+import 'package:ntavideofeedapp/clean_architecture_bloc/config/service_locator.dart';
+import 'package:ntavideofeedapp/clean_architecture_bloc/core/localization/language_change_controller.dart';
+import 'package:ntavideofeedapp/clean_architecture_bloc/core/service/Ntfy/background_task.dart';
+import 'package:ntavideofeedapp/clean_architecture_bloc/core/theme/app_theme.dart';
+import 'package:ntavideofeedapp/clean_architecture_bloc/shared/utils/snackbar_util.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:ntavideofeedapp/CleanArchitecture+Bloc/core/localization/app_localizations.dart';
-import 'package:ntavideofeedapp/CleanArchitecture+Bloc/core/router/route_generator.dart';
-import 'package:ntavideofeedapp/CleanArchitecture+Bloc/core/router/route_names.dart';
-import 'package:ntavideofeedapp/CleanArchitecture+Bloc/core/service/notification_service.dart';
+import 'package:ntavideofeedapp/clean_architecture_bloc/core/localization/app_localizations.dart';
+import 'package:ntavideofeedapp/clean_architecture_bloc/core/router/route_generator.dart';
+import 'package:ntavideofeedapp/clean_architecture_bloc/core/router/route_names.dart';
+import 'package:ntavideofeedapp/clean_architecture_bloc/core/service/notification_service.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:workmanager/workmanager.dart';
 
 var logger = Logger(
   level: kReleaseMode ? Level.warning : Level.debug,
-  printer: PrettyPrinter(
-    methodCount: 2,
-    errorMethodCount: 8,
-    lineLength: 120,
-    colors: true,
-    dateTimeFormat: DateTimeFormat.onlyTimeAndSinceStart,
-  ),
+  printer: PrettyPrinter(),
 );
 
 void main() async {
@@ -29,6 +26,24 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await setupLocator();
   await NotificationService().configuration();
+
+  Workmanager().initialize(callbackDispatcher, isInDebugMode: true);
+  /* Workmanager().registerPeriodicTask(
+    "fetch_message_task_id",
+    "fetch_message_task",
+    frequency: Duration(minutes: 15),
+    existingWorkPolicy: ExistingWorkPolicy.keep,
+    constraints: Constraints(networkType: NetworkType.connected),
+  ); */
+  Workmanager().registerOneOffTask(
+    "test_task_id",
+    "fetch_message_task", // this must match the name inside callbackDispatcher
+    initialDelay: Duration(seconds: 10), // test delay
+    existingWorkPolicy: ExistingWorkPolicy.replace,
+    constraints: Constraints(
+      networkType: NetworkType.connected,
+    ),
+  );
   SharedPreferences sp = await SharedPreferences.getInstance();
   final String languageCode = sp.getString('language_code') ?? '';
   runApp(MyApp(local: languageCode));
@@ -68,6 +83,7 @@ class MyApp extends StatelessWidget {
           return MaterialApp(
             title: 'Flutter Demo',
             locale: provider.appLocale,
+
             scaffoldMessengerKey: SnackbarUtil.messangerKey,
             localizationsDelegates: [
               AppLocalizations.delegate,
@@ -76,9 +92,7 @@ class MyApp extends StatelessWidget {
               GlobalCupertinoLocalizations.delegate,
             ],
             supportedLocales: [Locale("en"), Locale("hi")],
-            theme: ThemeData(
-              colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-            ),
+            theme: AppTheme.lightTheme,
             initialRoute: Routes.splashRoute,
             onGenerateRoute: RouteGenerator.generateRoute,
           );

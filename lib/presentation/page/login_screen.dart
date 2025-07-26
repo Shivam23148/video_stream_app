@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:ntavideofeedapp/CleanArchitecture+Bloc/config/service_locator.dart';
-import 'package:ntavideofeedapp/CleanArchitecture+Bloc/core/service/auth_example.dart';
-import 'package:ntavideofeedapp/CleanArchitecture+Bloc/core/service/auth_service.dart';
+import 'package:ntavideofeedapp/clean_architecture_bloc/config/service_locator.dart';
+import 'package:ntavideofeedapp/clean_architecture_bloc/core/service/auth_example.dart';
+import 'package:ntavideofeedapp/clean_architecture_bloc/core/service/auth_service.dart';
 import 'package:ntavideofeedapp/main.dart';
 
 class LoginScreen extends StatelessWidget {

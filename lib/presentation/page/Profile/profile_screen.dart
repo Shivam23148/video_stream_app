@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:ntavideofeedapp/CleanArchitecture+Bloc/config/service_locator.dart';
-import 'package:ntavideofeedapp/CleanArchitecture+Bloc/core/router/route_names.dart';
-import 'package:ntavideofeedapp/CleanArchitecture+Bloc/features/Playback/presentation/screen/playback_screen.dart';
-import 'package:ntavideofeedapp/CleanArchitecture+Bloc/features/customNavigation/presentation/cubit/navbar_cubit.dart';
-import 'package:ntavideofeedapp/CleanArchitecture+Bloc/features/customNavigation/presentation/screen/custom_navigationBar_Screen.dart';
+import 'package:ntavideofeedapp/clean_architecture_bloc/config/service_locator.dart';
+import 'package:ntavideofeedapp/clean_architecture_bloc/core/router/route_names.dart';
+import 'package:ntavideofeedapp/clean_architecture_bloc/features/Playback/presentation/screen/playback_screen.dart';
+import 'package:ntavideofeedapp/clean_architecture_bloc/features/customNavigation/presentation/cubit/navbar_cubit.dart';
+import 'package:ntavideofeedapp/clean_architecture_bloc/features/customNavigation/presentation/screen/custom_navigationBar_Screen.dart';
+import 'package:ntavideofeedapp/clean_architecture_bloc/features/rocketchat/presentation/rocket_chat_webview.dart';
 import 'package:ntavideofeedapp/main.dart';
+import 'package:ntavideofeedapp/presentation/page/Example/example_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -25,6 +27,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
     'Help & Support',
     'Security',
     'Playback',
+    'Rocket Chat',
+    'NTFY',
     'Logout',
   ];
 
@@ -42,9 +46,25 @@ class _ProfileScreenState extends State<ProfileScreen> {
       case 'Playback':
         _navigateToPlayback();
         break;
+      case 'Rocket Chat':
+        _navigateToRocketChat();
+        break;
+      case 'NTFY':
+        _navigateToNtfy();
       default:
         logger.d("No action defined for $option");
     }
+  }
+
+  void _navigateToNtfy() {
+    Navigator.push(context, MaterialPageRoute(builder: (_) => ExampleScreen()));
+  }
+
+  void _navigateToRocketChat() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (_) => RocketChatWebview()),
+    );
   }
 
   void _navigateToCustomizeNavBar() {

@@ -53,6 +53,16 @@ dependencies:
   flutter_bloc: ^9.1.1
   flutter_vlc_player: ^7.4.3
   logger: ^2.6.0
+  flutter_screenutil: ^5.9.3
+  webview_flutter: ^4.13.0
+  web_socket_channel: ^3.0.3
+  file_picker: ^10.2.0
+  path: ^1.9.1
+  path_provider: ^2.1.5
+  open_file: ^3.5.10
+  badges: ^3.1.2
+  workmanager: ^0.8.0
+
 
 dev_dependencies:
   flutter_test:

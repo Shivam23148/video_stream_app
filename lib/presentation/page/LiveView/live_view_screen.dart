@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_vlc_player/flutter_vlc_player.dart';
-import 'package:ntavideofeedapp/CleanArchitecture+Bloc/core/router/route_names.dart';
+import 'package:ntavideofeedapp/clean_architecture_bloc/core/router/route_names.dart';
 import 'package:ntavideofeedapp/main.dart';
 import 'package:video_player/video_player.dart';
 
